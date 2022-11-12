@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 12-Nov-2022 às 15:21
+-- Tempo de geração: 12-Nov-2022 às 16:03
 -- Versão do servidor: 10.4.25-MariaDB
 -- versão do PHP: 8.1.10
 
@@ -24,20 +24,6 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `dispesas`
---
-
-CREATE TABLE `dispesas` (
-  `id` int(11) NOT NULL,
-  `descricao` varchar(255) NOT NULL,
-  `categoria` varchar(255) NOT NULL,
-  `valor` double NOT NULL,
-  `datadespesa` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Estrutura da tabela `pessoas`
 --
 
@@ -50,14 +36,15 @@ CREATE TABLE `pessoas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Índices para tabelas despejadas
+-- Extraindo dados da tabela `pessoas`
 --
 
+INSERT INTO `pessoas` (`id`, `nome`, `email`, `rendimento`, `ativo`) VALUES
+(5, 'Guilherme', 'guilherme@gmail.com', '4000', 1);
+
 --
--- Índices para tabela `dispesas`
+-- Índices para tabelas despejadas
 --
-ALTER TABLE `dispesas`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `pessoas`
@@ -70,16 +57,10 @@ ALTER TABLE `pessoas`
 --
 
 --
--- AUTO_INCREMENT de tabela `dispesas`
---
-ALTER TABLE `dispesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
 -- AUTO_INCREMENT de tabela `pessoas`
 --
 ALTER TABLE `pessoas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
