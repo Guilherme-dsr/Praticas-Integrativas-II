@@ -4,30 +4,31 @@ require __DIR__ . '/vendor/autoload.php';
 
 use App\Common\Environment;
 use App\Database\Connection;
+use App\Controllers\StudentsController;
+use App\Controllers\DespesasController;
+use App\Models\Student;
 
 Environment::load(__DIR__);
 
 Connection::getInstance();
 
-// $env = getenv();
-
 $routesCollection = [
   "get" => [
     "/",
-    "/alunos",
-    "/despesas"
+    "/students",
+    "/expence"
   ],
   "post" => [
-    "/alunos",
-    "/despesas"
+    "/students",
+    "/expence"
   ],
   "put" => [
-    "/alunos",
-    "/despesas"
+    "/students",
+    "/expence"
   ],
   "delete" => [
-    "/alunos",
-    "/despesas"
+    "/students",
+    "/expence"
   ]
 ];
 
@@ -41,19 +42,68 @@ if(!in_array($uri, $routesCollection[$method])) {
 
 switch($method) {
   case 'get':
-    echo 'é um get';
+    if($uri == '/students'){
+      $var = new StudentsController();
+      $resultado = $var->index();
+      print_r($resultado);
+    }
+    if($uri == '/expence'){
+      $var = new ExpenceController();
+      $resultado = $var->index();
+      print_r($resultado);
+    }
     break;
 
   case 'post':
-    echo 'é um post';
+    if($uri == '/students'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+
+      $student = new Student();
+      $student->setNome($data->nome);
+      $student->setEmail($data->email);
+      $student->setRendimento($data->rendimento);
+      $student->setAtivo($data->ativo);
+      
+      $var = new StudentsController();
+      $resultado = $var->create($student);
+      echo($resultado['msg']);
+    }
+    // if($uri == '/expence'){
+    //   $var = new ExpenceController();
+    //   $resultado = $var->index();
+    //   print_r($resultado);
+    // }
     break;
 
   case 'put':
-    echo 'é um put';
+    if($uri == '/students'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+      $id = $data->id;
+
+      $student = new Student();
+      $student->setNome($data->nome);
+      $student->setEmail($data->email);
+      $student->setRendimento($data->rendimento);
+      $student->setAtivo($data->ativo);
+      
+      $var = new StudentsController();
+      $resultado = $var->update($student, $id);
+      echo($resultado['msg']);
+    }
     break;
 
   case 'delete':
-    echo 'é um delete';
+    if($uri == '/students'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+      $id = $data->id;
+
+      $var = new StudentsController();
+      $resultado = $var->delete($id);
+      echo($resultado['msg']);
+    }
     break;
 
   default:
