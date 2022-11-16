@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Database\Connection;
 use App\Models\Student;
+use Exception;
 use PDO;
 
 class StudentsController {
@@ -58,11 +59,11 @@ class StudentsController {
     $data = array();
     try {
       $sql = "UPDATE pessoas SET
-          nome = :nome,
-          email = :email,
-          rendimento = :rendimento,
-          ativo = :ativo
-          WHERE id = :id";
+        nome = :nome,
+        email = :email,
+        rendimento = :rendimento,
+        ativo = :ativo
+        WHERE id = :id";
 
       $p_sql = Connection::getInstance()->prepare($sql);
 
@@ -78,10 +79,10 @@ class StudentsController {
       return $data;
 
     } catch (Exception $e) {
-        $data['msg'] = "Estudante não foi atualizado!";
-        $data['success'] = false;
+      $data['msg'] = "Estudante não foi atualizado!";
+      $data['success'] = false;
 
-        return $data;
+      return $data;
     }
   }
 

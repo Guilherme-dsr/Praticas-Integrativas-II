@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-class Despesa{
+class Expense{
     private $descricao;
-    private $categoria;
+    private $idCategoria;
     private $valor;
     private $dataDespesa;
 
@@ -16,16 +16,16 @@ class Despesa{
         $this->descricao = $descricao;
     }
 
-    public function getCategoria() {
-        return $this->email;
+    public function getIdCategoria() {
+        return $this->idCategoria;
     }
 
-    public function setCategoria($categoria) {
-        $this->categoria = $categoria;
+    public function setIdCategoria($idCategoria) {
+        $this->idCategoria = $idCategoria;
     }
 
     public function getValor() {
-        return $this->rendimento;
+        return $this->valor;
     }
 
     public function setValor($valor) {

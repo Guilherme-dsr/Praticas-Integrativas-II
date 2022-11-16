@@ -5,7 +5,8 @@ require __DIR__ . '/vendor/autoload.php';
 use App\Common\Environment;
 use App\Database\Connection;
 use App\Controllers\StudentsController;
-use App\Controllers\DespesasController;
+use App\Controllers\ExpenseController;
+use App\Models\Expense;
 use App\Models\Student;
 
 Environment::load(__DIR__);
@@ -16,19 +17,19 @@ $routesCollection = [
   "get" => [
     "/",
     "/students",
-    "/expence"
+    "/expense"
   ],
   "post" => [
     "/students",
-    "/expence"
+    "/expense"
   ],
   "put" => [
     "/students",
-    "/expence"
+    "/expense"
   ],
   "delete" => [
     "/students",
-    "/expence"
+    "/expense"
   ]
 ];
 
@@ -43,14 +44,14 @@ if(!in_array($uri, $routesCollection[$method])) {
 switch($method) {
   case 'get':
     if($uri == '/students'){
-      $var = new StudentsController();
-      $resultado = $var->index();
-      print_r($resultado);
+      $studentsController = new StudentsController();
+      $resultado = $studentsController->index();
+      echo json_encode($resultado);
     }
-    if($uri == '/expence'){
-      $var = new ExpenceController();
-      $resultado = $var->index();
-      print_r($resultado);
+    if($uri == '/expense'){
+      $expenseController = new ExpenseController();
+      $resultado = $expenseController->index();
+      echo json_encode($resultado);
     }
     break;
 
@@ -65,15 +66,24 @@ switch($method) {
       $student->setRendimento($data->rendimento);
       $student->setAtivo($data->ativo);
       
-      $var = new StudentsController();
-      $resultado = $var->create($student);
+      $studentsController = new StudentsController();
+      $resultado = $studentsController->create($student);
       echo($resultado['msg']);
     }
-    // if($uri == '/expence'){
-    //   $var = new ExpenceController();
-    //   $resultado = $var->index();
-    //   print_r($resultado);
-    // }
+
+    if($uri == '/expense'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+
+      $expense = new Expense();
+      $expense->setDescricao($data->descricao);
+      $expense->setIdCategoria($data->id_categoria);
+      $expense->setValor($data->valor);
+
+      $expenseController = new ExpenseController();
+      $resultado = $expenseController->create($expense);
+      echo($resultado['msg']);
+    }
     break;
 
   case 'put':
@@ -88,8 +98,23 @@ switch($method) {
       $student->setRendimento($data->rendimento);
       $student->setAtivo($data->ativo);
       
-      $var = new StudentsController();
-      $resultado = $var->update($student, $id);
+      $studentsController = new StudentsController();
+      $resultado = $studentsController->update($student, $id);
+      echo($resultado['msg']);
+    }
+
+    if($uri == '/expense'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+      $id = $data->id;
+
+      $expense = new Expense();
+      $expense->setDescricao($data->descricao);
+      $expense->setIdCategoria($data->id_categoria);
+      $expense->setValor($data->valor);
+
+      $expenseController = new ExpenseController();
+      $resultado = $expenseController->update($expense, $id);
       echo($resultado['msg']);
     }
     break;
@@ -100,8 +125,18 @@ switch($method) {
       $data = json_decode($json);
       $id = $data->id;
 
-      $var = new StudentsController();
-      $resultado = $var->delete($id);
+      $studentsController = new StudentsController();
+      $resultado = $studentsController->delete($id);
+      echo($resultado['msg']);
+    }
+
+    if($uri == '/expense'){
+      $json = file_get_contents('php://input');
+      $data = json_decode($json);
+      $id = $data->id;
+
+      $expenseController = new ExpenseController();
+      $resultado = $expenseController->delete($id);
       echo($resultado['msg']);
     }
     break;
