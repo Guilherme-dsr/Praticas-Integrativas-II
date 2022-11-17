@@ -35,3 +35,8 @@ ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `despesas`
 ADD CONSTRAINT `despesas_ibfk_1` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO `categorias` (`id`, `nome`) VALUES
+(1, 'Energia'),
+(2, 'Água'),
+(3, 'Internet');
