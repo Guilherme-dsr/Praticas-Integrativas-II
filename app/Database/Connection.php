@@ -9,7 +9,7 @@ class Connection {
 
   public static function getInstance() {
     if(!isset(self::$instance)) {
-      self::$instance = new PDO("mysql:host=localhost;dbname=republica", 'root', '');
+      self::$instance = new PDO("mysql:host=".getenv('DB_HOST').";dbname=".getenv('DB_NAME'), getenv('DB_USER'), getenv('DB_PASS'));
     }
 
     return self::$instance;
