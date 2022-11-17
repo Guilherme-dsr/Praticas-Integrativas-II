@@ -5,7 +5,7 @@ require __DIR__ . '/vendor/autoload.php';
 use App\Common\Environment;
 use App\Database\Connection;
 use App\Controllers\StudentsController;
-use App\Controllers\ExpenseController;
+use App\Controllers\ExpensesController;
 use App\Models\Expense;
 use App\Models\Student;
 
@@ -43,13 +43,46 @@ if(!in_array($uri, $routesCollection[$method])) {
 
 switch($method) {
   case 'get':
+    if($uri == '/') {
+      $totalValue = 0;
+      $countStudents = 0;
+      $avg = 0;
+      $data = [];
+
+      $studentsController = new StudentsController();
+      $expenseController = new ExpensesController();
+
+      $students = $studentsController->index();
+      $expenses = $expenseController->getExpensesByMonth();
+
+      $countStudents = count($students);
+
+      foreach($students as $studant) {
+        $studant['rendimento'] = floatval(number_format($studant['rendimento'], 2));
+      }
+
+      foreach($expenses as $expense) {
+        $totalValue += $expense['valor'];
+      }
+
+      $avg = $totalValue / $countStudents;
+
+      $data['numero_estudantes'] = $countStudents;
+      $data['total_despesas'] = floatval(number_format($totalValue, 2));
+      $data['media'] = floatval(number_format($avg, 2));
+      $data['estudantes'] = $students;
+      $data['despesas'] = $expenses;
+
+      echo json_encode($data);
+    }
+
     if($uri == '/students'){
       $studentsController = new StudentsController();
       $resultado = $studentsController->index();
       echo json_encode($resultado);
     }
     if($uri == '/expense'){
-      $expenseController = new ExpenseController();
+      $expenseController = new ExpensesController();
       $resultado = $expenseController->index();
       echo json_encode($resultado);
     }
@@ -80,7 +113,7 @@ switch($method) {
       $expense->setIdCategoria($data->id_categoria);
       $expense->setValor($data->valor);
 
-      $expenseController = new ExpenseController();
+      $expenseController = new ExpensesController();
       $resultado = $expenseController->create($expense);
       echo($resultado['msg']);
     }
@@ -113,7 +146,7 @@ switch($method) {
       $expense->setIdCategoria($data->id_categoria);
       $expense->setValor($data->valor);
 
-      $expenseController = new ExpenseController();
+      $expenseController = new ExpensesController();
       $resultado = $expenseController->update($expense, $id);
       echo($resultado['msg']);
     }
@@ -135,7 +168,7 @@ switch($method) {
       $data = json_decode($json);
       $id = $data->id;
 
-      $expenseController = new ExpenseController();
+      $expenseController = new ExpensesController();
       $resultado = $expenseController->delete($id);
       echo($resultado['msg']);
     }

@@ -7,11 +7,25 @@ use App\Models\Expense;
 use Exception;
 use PDO;
 
-class ExpenseController {
+class ExpensesController {
 
   public function index() {
     try {
         $sql = "SELECT * FROM despesas";
+        $result = Connection::getInstance()->query($sql);
+        $lista = $result->fetchAll(PDO::FETCH_ASSOC);
+        return $lista;
+    } catch (Exception $e) {
+        print "Ocorreu um erro ao tentar executar esta ação,
+        foi gerado um LOG do mesmo, tente novamente mais tarde.";
+    }
+  }
+
+  public function getExpensesByMonth($year = null, $month = null) {
+    $year = $year ? $year : date("Y");
+    $month = $month ? $month : date("m");
+    try {
+        $sql = "SELECT * FROM despesas WHERE YEAR(data_despesa) = $year AND MONTH(data_despesa) = $month";
         $result = Connection::getInstance()->query($sql);
         $lista = $result->fetchAll(PDO::FETCH_ASSOC);
         return $lista;
