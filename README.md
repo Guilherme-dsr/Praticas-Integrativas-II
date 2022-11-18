@@ -1,6 +1,10 @@
 ## Instalar as dependencias do projeto
 `composer install`
 
+## Como startar o server
+A porta apode ser escolhida qual for melhor
+`php -S localhost:8000`
+
 ## Criar o banco do dados
 `CREATE DATABASE IF NOT EXISTS republica;`
 
