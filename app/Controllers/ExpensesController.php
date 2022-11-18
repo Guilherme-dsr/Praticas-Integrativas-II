@@ -11,7 +11,7 @@ class ExpensesController {
 
   public function index() {
     try {
-        $sql = "SELECT * FROM despesas";
+        $sql = "SELECT despesas.*, categorias.nome as categoria FROM despesas INNER JOIN categorias ON despesas.id = categorias.id";
         $result = Connection::getInstance()->query($sql);
         $lista = $result->fetchAll(PDO::FETCH_ASSOC);
         return $lista;
@@ -25,7 +25,7 @@ class ExpensesController {
     $year = $year ? $year : date("Y");
     $month = $month ? $month : date("m");
     try {
-        $sql = "SELECT * FROM despesas WHERE YEAR(data_despesa) = $year AND MONTH(data_despesa) = $month";
+        $sql = "SELECT despesas.*, categorias.nome as categoria FROM despesas INNER JOIN categorias ON despesas.id = categorias.id WHERE YEAR(despesas.data_despesa) = $year AND MONTH(despesas.data_despesa) = $month";
         $result = Connection::getInstance()->query($sql);
         $lista = $result->fetchAll(PDO::FETCH_ASSOC);
         return $lista;
